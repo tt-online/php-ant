@@ -15,16 +15,20 @@ RUN apt-get update && apt-get install -y \
     curl \
     php-cli \
     php7.0 \
+    php7.0-fpm \
+    php7.0-common \
     php-json \
     php-xml \
-    php7.0-common \
     php-intl \
+    php-mysql \
     php-mcrypt \
     php-apcu \
     php-soap \
     php-redis \
     php-curl \
     php-xdebug
+
+WORKDIR /var/www
 
 ADD entrypoint.sh /entrypoint.sh
 RUN chmod 777 /entrypoint.sh
