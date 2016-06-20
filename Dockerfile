@@ -1,11 +1,16 @@
-FROM ttonline/php7:latest
+FROM ttonline/php:7.0
 
 ENV XDEBUG_ENABLED=0
 
-RUN apt-get install -y language-pack-en-base software-properties-common \
- && LC_ALL=en_GB.UTF-8 add-apt-repository ppa:webupd8team/java -y \
- && echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections \
- && apt-get update && apt-get install -y oracle-java8-installer ant \
+RUN apt-get update && apt-get install -y wget \
+ && wget --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u74-b02/jdk-8u74-linux-x64.tar.gz \
+ && mkdir /opt/jdk \
+ && tar -zxf jdk-8u74-linux-x64.tar.gz -C /opt/jdk \
+ && rm jdk-8u74-linux-x64.tar.gz \
+ && update-alternatives --install /usr/bin/java java /opt/jdk/jdk1.8.0_74/bin/java 100 \
+ && update-alternatives --install /usr/bin/javac javac /opt/jdk/jdk1.8.0_74/bin/javac 100 \
+ && apt-get install -y ant \
+ && apt-get remove -y wget \
  && apt-get clean && apt-get autoremove -y && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
  && rm /etc/php/7.0/cli/conf.d/20-xdebug.ini \
  && mkdir -p /root/.ssh
